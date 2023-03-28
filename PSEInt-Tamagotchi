@@ -1,0 +1,800 @@
+//descarga: https://www.mediafire.com/file/ql58m9geelpkntc/Tamagochi.psc/file
+//Codigo
+Algoritmo Tamagochi
+	// variables configurables
+	UserName <- none // nombre del jugador
+	Personaje <- none // dibujo de la mascota
+	PetName <- none // nombre de la mascota
+	// variables de mascota
+	Hambre <- 100
+	Higiene <- 100
+	Salud <- 100
+	Energia <- 100
+	Felicidad <- 100
+	vida <- 100
+	// Variables de inventario
+	pan <- 0
+	pastel <- 0
+	agua <- 0
+	jugo <- 0
+	medicina <- 0
+	inyeccion <- 0
+	bendas <- 0
+	// variables para la tienda
+	Cantidad <- 0
+	Precio <- 0
+	Descuento <- 0
+	// Variables de partida
+	menu <- 'Casa' // Casa Y - Patio Y - Hospital Y- Tienda N- Cocina Y- Stats Y- Movimiento Y- Inventario Y- ShopH Y, ShopN N, Alimentar Y- Medicar Y-
+	confirmacion <- 'no' // si - no
+	eleccion <- 0
+	Dinero <- 500
+	puntuacion = 0
+	// Seleccionar jugador
+	Repetir
+		confirmacion <- 'no'
+		Borrar Pantalla
+		Escribir 'Escribe tu nombre:'
+		Leer UserName
+		Borrar Pantalla
+		Escribir 'Tu nombre es: ',UserName,'. ¿Continuar?'
+		Escribir 'Si / No'
+		Leer confirmacion
+		confirmacion <- Minusculas(confirmacion)
+	Hasta Que confirmacion='si'
+	// Seleccionar mascota
+	Repetir
+		eleccion <- 0
+		confirmacion <- 'no'
+		Borrar Pantalla
+		Escribir UserName,' selecciona tu mascota: '
+		Escribir '||  (OwO)  ||  (UwU)  ||  (nwn)  ||'
+		Escribir '      1          2          3      '
+		Leer eleccion
+		Si eleccion=1 Entonces
+			Personaje <- '(OwO)'
+			Borrar Pantalla
+			Escribir '¿Quieres elegir a: ',Personaje,'?'
+			Escribir 'Si / No'
+			Leer confirmacion
+			confirmacion <- Minusculas(confirmacion)
+		SiNo
+			Si eleccion=2 Entonces
+				Personaje <- '(UwU)'
+				Borrar Pantalla
+				Escribir '¿Quieres elegir a: ',Personaje,'?'
+				Escribir 'Si / No'
+				Leer confirmacion
+				confirmacion <- Minusculas(confirmacion)
+			SiNo
+				Si eleccion=3 Entonces
+					Personaje <- '(nwn)'
+					Borrar Pantalla
+					Escribir '¿Quieres elegir a: ',Personaje,'?'
+					Escribir 'Si / No'
+					Leer confirmacion
+					confirmacion <- Minusculas(confirmacion)
+				FinSi
+			FinSi
+		FinSi
+	Hasta Que ((eleccion=1 O eleccion=2 O eleccion=3) Y confirmacion='si')
+	// Elegir nombre de la mascota
+	Repetir
+		confirmacion <- 'no'
+		Borrar Pantalla
+		Escribir 'Escribe el nombre de tu mascota:'
+		Leer PetName
+		Borrar Pantalla
+		Escribir 'Tu mascota es: ',PetName,'. ¿Continuar?'
+		Escribir 'Si / No'
+		Leer confirmacion
+		confirmacion <- Minusculas(confirmacion)
+	Hasta Que confirmacion='si'
+	Repetir
+		Borrar Pantalla
+		Escribir UserName,', ',PetName,' esta esperando por ti. ',Personaje
+		Escribir '¿Quieres leer como jugar antes de comenzar?'
+		Escribir "Si / No"
+		Leer confirmacion
+		confirmacion <- Minusculas(confirmacion)
+	Hasta Que confirmacion='si' O confirmacion='no'
+	Si confirmacion='si' Entonces
+		Borrar Pantalla
+		Escribir 'Reglas:'
+		Escribir 'Tu hambre bajara 1 punto por cada accion que realices.'
+		Escribir 'Tu Salud bajara 0.2 puntos por cada accion que realices.'
+		Escribir 'Tu higiene bajara 2 puntos por cada accion que realices.'
+		Escribir 'Tu energia bajara 2 puntos por cada accion que realices.'
+		Escribir 'Tu felicidad bajara 1 punto por cada accion que realices.'
+		Escribir 'Tu salud bajara puntos segun cuantas estadisticas tengas bajas.'
+		Escribir 'Tu vida disminuira si tu salud es menor a 20 puntos.'
+		Escribir 'Recibiras $15 cada 1 por cada accion que realices.'
+		Escribir 'Tu vida solo recupera puntos si tu salud es mayor a 80.'
+		Escribir '=============================================================='
+		Escribir '- Puedes comprar en la tienda o robarla para conseguir comida y dinero extra (Posible evento).'
+		Escribir '- Puedes comprar y usar medicinas para subir tu salud en el hospital.'
+		Escribir '- Para ver tus estadisticas o inventario, debes ir a tu casa.'
+		Escribir '- Manten a tu mascota viva el mayor tiempo posible.'
+		Escribir 'Toca una tecla para continuar.'
+		Esperar Tecla
+	FinSi
+	Borrar Pantalla
+	// Juego
+	Repetir
+		Borrar Pantalla
+		confirmacion <- 'no'
+		eleccion <- 0
+		Hambre <- Hambre-1
+		Salud <- Salud-0.2
+		Higiene <- Higiene-2
+		Energia <- Energia-2
+		Felicidad <- Felicidad-1
+		puntuacion = puntuacion+1
+		Dinero = Dinero+15
+		Escribir '======NOTIFICACION======| Puntaje:',puntuacion," || Dinero: $",Dinero
+		Si Hambre<10 Entonces
+			Salud <- Salud-10
+			Escribir 'El hambre de ',PetName,' es menor a 10.'
+			Escribir PetName,' perdio 10 de salud.'
+		FinSi
+		Si Energia<10 Entonces
+			Salud <- Salud-3
+			Escribir 'La energia de ',PetName,' es menor a 10.'
+			Escribir PetName,' perdio 3 de salud.'
+		FinSi
+		Si Higiene<10 Entonces
+			Salud <- Salud-1
+			Escribir 'La higiene de ',PetName,' es menor a 10.'
+			Escribir PetName,' perdio 1 de salud.'
+		FinSi
+		Si Felicidad<20 Entonces
+			Salud <- Salud-1
+			Escribir 'La felicidad de ',PetName,' es menor a 20.'
+			Escribir PetName,'perdio 1 de salud.'
+		FinSi
+		Si Salud<20 Entonces
+			vida <- vida-1
+			Escribir 'La salud de ',PetName,' Es menor a 20.'
+			Escribir PetName,' Perdio 1 de vida.'
+		SiNo
+			Si Salud>85 Entonces
+				Si vida<100 Entonces
+					vida <- vida+2
+					Escribir PetName,' recupero 2 de vida.'
+				FinSi
+			FinSi
+		FinSi
+		// Limites
+		Si Hambre<0 Entonces
+			Hambre <- Hambre+(Hambre*(-1))
+		FinSi
+		Si Hambre>100 Entonces
+			dif <- Hambre-100
+			Hambre <- Hambre-dif
+		FinSi
+		Si Energia<0 Entonces
+			Energia <- Energia+(Energia*(-1))
+		FinSi
+		Si Energia>100 Entonces
+			dif <- Energia-100
+			Energia <- Energia-dif
+		FinSi
+		Si Higiene<0 Entonces
+			Higiene <- Higiene+(Higiene*(-1))
+		FinSi
+		Si Higiene>100 Entonces
+			dif <- Higiene-100
+			Higiene <- Higiene-dif
+		FinSi
+		Si Salud<0 Entonces
+			Salud <- Salud+(Salud*(-1))
+		FinSi
+		Si Salud>100 Entonces
+			dif <- Salud-100
+			Salud <- Salud-dif
+		FinSi
+		Si Felicidad<0 Entonces
+			Felicidad <- Felicidad+(Felicidad*(-1))
+		FinSi
+		Si Felicidad>100 Entonces
+			dif <- Felicidad-100
+			Felicidad <- Felicidad-dif
+		FinSi
+		// juego
+		Escribir '========================'
+		Escribir ' '
+		Escribir ' '
+		Si menu=='Casa' Entonces
+			Escribir '       Estas en tu casa       '
+			Escribir '  __________________________  '
+			Escribir ' /                          \ '
+			Escribir '/                            \'
+			Escribir '=============================='
+			Escribir '|                            |'
+			Escribir '|                            |'
+			Escribir '|                        |===|'
+			Escribir '|                        |   |'
+			Escribir '|       ',Personaje,'            |  °|'
+			Escribir '=============================='
+			Escribir '¿Que deseas hacer?'
+			Escribir '1- Ver estadisticas.'
+			Escribir '2- Ver inventario.'
+			Escribir '3- Moverme.'
+			Leer eleccion
+			Si eleccion=1 Entonces
+				menu <- 'Stats'
+			SiNo
+				Si eleccion=2 Entonces
+					menu <- 'Inventario'
+				SiNo
+					Si eleccion=3 Entonces
+						menu <- 'Movimiento'
+					FinSi
+				FinSi
+			FinSi
+		SiNo
+			Si menu=='Stats' Entonces
+				Escribir 'Info jugador:'
+				Escribir 'Nombre: ',UserName
+				Escribir 'Mascota: ',Personaje
+				Escribir 'Dinero: $',Dinero
+				Escribir ' '
+				Escribir 'Info mascota:'
+				Escribir 'Nombre: ',PetName
+				Escribir 'Hambre: ',Hambre
+				Escribir 'Energia: ',Energia
+				Escribir 'Higiente: ',Higiene
+				Escribir 'Salud: ',Salud
+				Escribir 'Felicidad: ',Felicidad
+				Escribir 'Vida: ',vida
+				Escribir ''
+				Escribir ''
+				Escribir '¿Que deseas hacer?'
+				Escribir '1- Volver.'
+				Escribir '2- Moverme.'
+				Leer eleccion
+				Si eleccion=1 Entonces
+					menu <- 'Casa'
+				SiNo
+					Si eleccion=2 Entonces
+						menu <- 'Movimiento'
+					FinSi
+				FinSi
+			SiNo
+				Si menu='Movimiento' Entonces
+					Escribir '¿Donde deseas ir?'
+					Escribir '1- Casa.'
+					Escribir '2- Patio.'
+					Escribir '3- Cocina.'
+					Escribir '4- Tienda.'
+					Escribir '5- Hospital.'
+					Leer eleccion
+					Si eleccion=1 Entonces
+						menu <- 'Casa'
+					SiNo
+						Si eleccion=2 Entonces
+							menu <- 'Patio'
+						SiNo
+							Si eleccion=3 Entonces
+								menu <- 'Cocina'
+							SiNo
+								Si eleccion=4 Entonces
+									menu <- 'Tienda'
+								SiNo
+									Si eleccion=5 Entonces
+										menu <- 'Hospital'
+									FinSi
+								FinSi
+							FinSi
+						FinSi
+					FinSi
+				SiNo
+					Si menu=='Inventario' Entonces
+						Escribir 'Alimento'
+						Escribir 'Pan: ',pan
+						Escribir 'Pastel: ',pastel
+						Escribir 'Agua: ',agua
+						Escribir 'Jugo: ',jugo
+						Escribir ' '
+						Escribir 'Utiles'
+						Escribir 'Medicina: ',medicina
+						Escribir 'Inyeccion: ',inyeccion
+						Escribir 'Benda: ',bendas
+						Escribir ''
+						Escribir ''
+						Escribir '¿Que deseas hacer?'
+						Escribir '1- Volver.'
+						Escribir '2- Moverme.'
+						Leer eleccion
+						Si eleccion=1 Entonces
+							menu <- 'Casa'
+						SiNo
+							Si eleccion=2 Entonces
+								menu <- 'Movimiento'
+							FinSi
+						FinSi
+					SiNo
+						Si menu=='Patio' Entonces
+							Escribir '       Estas en tu patio      '
+							Escribir '                              '
+							Escribir '                              '
+							Escribir '                              '
+							Escribir '                              '
+							Escribir '                              '
+							Escribir '   ^                          '
+							Escribir '  /|\                         '
+							Escribir ' //|\\                        '
+							Escribir '   |       ',Personaje,'              '
+							Escribir '=============================='
+							Escribir '¿Que deseas hacer?'
+							Escribir '1- Jugar con ',PetName,"."
+							Escribir '2- Dormir a ',PetName,"."
+							Escribir '3- Asear a ',PetName,"."
+							Escribir '4- Moverme.'
+							Leer eleccion
+							Si eleccion=1 Entonces
+								Si Energia>5 Entonces
+									Energia <- Energia-5
+									Felicidad <- Felicidad+15
+									Escribir PetName,' ha jugado, obvtuviste 15 de felicidad.'
+									Escribir PetName,' ha gastado 5 de energia.'
+									EventoJugar <- azar(10)
+									Si EventoJugar==9 Entonces
+										Salud <- Salud-10
+										Escribir PetName,' se ha lastimado mientras jugaba. -10 de salud.'
+									FinSi
+									Esperar 3 Segundos
+								SiNo
+									Escribir PetName,' no tiene energia para jugar.'
+									Esperar 3 Segundos
+								FinSi
+							SiNo
+								Si eleccion=2 Entonces
+									Si Salud>5 Entonces
+										Energia <- Energia+30
+										Escribir PetName,' ha dormido y recupero 30 de energia.'
+										Esperar 3 Segundos
+									SiNo
+										Escribir PetName,'no se siente bien para dormir.'
+										Esperar 3 Segundos
+									FinSi
+								SiNo
+									Si eleccion=3 Entonces
+										Si agua>=1 Entonces
+											agua <- agua-1
+											Higiene <- Higiene+20
+											Energia <- Energia-5
+											Escribir PetName,' se ha limpiado y recupero 20 de higiene.'
+											Escribir PetName,' ha gastado 5 de energia.'
+											Esperar 3 Segundos
+										SiNo
+											Escribir 'Necesitas agua para asear a ',PetName,"."
+											Esperar 2 Segundos
+										FinSi
+									SiNo
+										Si eleccion=4 Entonces
+											menu <- 'Movimiento'
+										FinSi
+									FinSi
+								FinSi
+							FinSi
+						SiNo
+							Si menu=='Cocina' Entonces
+								Escribir '      Estas en tu cocina      '
+								Escribir '  __________________________  '
+								Escribir ' /                          \ '
+								Escribir '/                            \'
+								Escribir '=============================='
+								Escribir '|                            |'
+								Escribir '|                            |'
+								Escribir '|                            |'
+								Escribir '|                ________    |'
+								Escribir '|    ',Personaje,'        |    |     |'
+								Escribir '=============================='
+								Escribir '¿Que deseas hacer?'
+								Escribir '1- Alimentar a ',PetName,"."
+								Escribir '2- Moverme.'
+								Leer eleccion
+								Si eleccion=1 Entonces
+									menu <- 'Alimentar'
+								SiNo
+									Si eleccion=2 Entonces
+										menu <- 'Movimiento'
+									FinSi
+								FinSi
+							SiNo
+								Si menu=='Alimentar' Entonces
+									Escribir 'Alimentos:'
+									Escribir '1- Pan      +5  Hambre | + 1 salud'
+									Escribir '2- Pastel   +10 Hambre | - 2 salud'
+									Escribir '3- Agua     +7  Hambre | + 3 salud'
+									Escribir '4- Jugo     +8  Hambre | - 2 salud'
+									Escribir '5- Volver.'
+									Escribir ''
+									Escribir '¿Que le daras de comer a ',PetName,'?'
+									Leer eleccion
+									Si eleccion=1 Entonces
+										Si pan>=1 Entonces
+											pan <- pan-1
+											Hambre <- Hambre+5
+											Salud <- Salud+1
+											Escribir 'Le has dado de comer pan a ',PetName,"."
+											Esperar 3 Segundos
+										SiNo
+											Escribir 'No tienes pan.'
+											Esperar 3 Segundos
+										FinSi
+									SiNo
+										Si eleccion=2 Entonces
+											Si pastel>=1 Entonces
+												pastel <- pastel-1
+												Hambre <- Hambre+10
+												Salud <- Salud-2
+												Escribir 'Le has dado de comer pastel a ',PetName,"."
+												Esperar 3 Segundos
+											SiNo
+												Escribir 'No tienes pastel.'
+												Esperar 3 Segundos
+											FinSi
+										SiNo
+											Si eleccion=3 Entonces
+												Si agua>=1 Entonces
+													agua <- agua-1
+													Hambre <- Hambre+7
+													Salud <- Salud+3
+													Escribir 'Le has dado de beber agua a ',PetName,"."
+													Esperar 3 Segundos
+												SiNo
+													Escribir 'No tienes agua.'
+													Esperar 3 Segundos
+												FinSi
+											SiNo
+												Si eleccion=4 Entonces
+													Si jugo>=1 Entonces
+														jugo <- jugo-1
+														Hambre <- Hambre+8
+														Salud <- Salud-2
+														Escribir 'Le has dado de beber jugo a ',PetName,"."
+														Esperar 3 Segundos
+													SiNo
+														Escribir 'No tienes jugo.'
+														Esperar 3 Segundos
+													FinSi
+												SiNo
+													Si eleccion=5 Entonces
+														menu <- 'Cocina'
+													FinSi
+												FinSi
+											FinSi
+										FinSi
+									FinSi
+								SiNo
+									Si menu=='Hospital' Entonces
+										Escribir '      Estas en hospital       '
+										Escribir '                       /\     '
+										Escribir '=============================='
+										Escribir '|                    |       |'
+										Escribir '|                 ---+---    |'
+										Escribir '|                    |       |'
+										Escribir '|                            |'
+										Escribir '|    ',Personaje,'                   |'
+										Escribir '=============================='
+										Escribir '¿Que deseas hacer?'
+										Escribir '1- Comprar medicina para ',PetName,"."
+										Escribir '2- Medicar a ',PetName,"."
+										Escribir '3- Moverme.'
+										Leer eleccion
+										Si eleccion=1 Entonces
+											menu <- 'ShopH'
+										SiNo
+											Si eleccion=2 Entonces
+												menu <- 'Medicar'
+											SiNo
+												Si eleccion=3 Entonces
+													menu <- 'Movimiento'
+												FinSi
+											FinSi
+										FinSi
+									SiNo
+										Si menu=='ShopH' Entonces
+											Escribir '¿Que necesitas comprar?'
+											Escribir '1- Medicina    $50'
+											Escribir '2- Bendas    $100'
+											Escribir '3- Inyeccion   $200'
+											Escribir '4- Volver.'
+											Escribir ' '
+											Leer eleccion
+											Si eleccion=1 Entonces
+												Escribir 'Ingresa una cantidad:'
+												Leer Cantidad
+												Si Cantidad>0 Entonces
+													Si Dinero>=(Cantidad*50) Entonces
+														medicina <- medicina+Cantidad
+														Dinero <- Dinero-(Cantidad*50)
+														Escribir Cantidad,' medicinas fueron agregadas a tu inventario.'
+														Esperar 2 Segundos
+													SiNo
+														Escribir 'Dinero insuficiente para realizar el pago.'
+														Esperar 2 Segundos
+													FinSi
+												SiNo
+													Escribir 'Intento de vulnerar el sistema.'
+													Escribir 'Se te ha penalizado -20 de vida.'
+													vida <- vida-20
+													Esperar 2 Segundos
+												FinSi
+											SiNo
+												Si eleccion=2 Entonces
+													Escribir 'Ingresa una cantidad:'
+													Leer Cantidad
+													Si Cantidad>0 Entonces
+														Si Dinero>=(Cantidad*100) Entonces
+															bendas <- bendas+Cantidad
+															Dinero <- Dinero-(Cantidad*100)
+															Escribir Cantidad,' bendas fueron agregadas a tu inventario.'
+															Esperar 2 Segundos
+														SiNo
+															Escribir 'Dinero insuficiente para realizar el pago.'
+															Esperar 2 Segundos
+														FinSi
+													SiNo
+														Escribir 'Intento de vulnerar el sistema.'
+														Escribir 'Se te ha penalizado -20 de vida.'
+														vida <- vida-20
+														Esperar 2 Segundos
+													FinSi
+												SiNo
+													Si eleccion=3 Entonces
+														Escribir 'Ingresa una cantidad:'
+														Leer Cantidad
+														Si Cantidad>0 Entonces
+															Si Dinero>=(Cantidad*200) Entonces
+																inyeccion <- inyeccion+Cantidad
+																Dinero <- Dinero-(Cantidad*200)
+																Escribir Cantidad,' inyecciones fueron agregadas a tu inventario.'
+																Esperar 2 Segundos
+															SiNo
+																Escribir 'Dinero insuficiente para realizar el pago.'
+																Esperar 2 Segundos
+															FinSi
+														SiNo
+															Escribir 'Intento de vulnerar el sistema.'
+															Escribir 'Se te ha penalizado -20 de vida.'
+															vida <- vida-20
+															Esperar 2 Segundos
+														FinSi
+													SiNo
+														Si eleccion=4 Entonces
+															menu <- 'Hospital'
+														FinSi
+													FinSi
+												FinSi
+											FinSi
+										SiNo
+											Si menu='Medicar' Entonces
+												Escribir '¿Que quieres utilizar?'
+												Escribir '1- Medicina   +5  Salud'
+												Escribir '2- Benda      +15 Salud'
+												Escribir '3- Inyeccion  +45 Salud'
+												Escribir '4- Volver.'
+												Leer eleccion
+												Si eleccion=1 Entonces
+													Si medicina>=1 Entonces
+														medicina <- medicina-1
+														Salud <- Salud+5
+														Escribir PetName,' utilizo la medicina.'
+														Escribir PetName,' recupero 5 de salud.'
+														Esperar 3 Segundos
+													SiNo
+														Escribir 'No tienes medicinas.'
+														Esperar 3 Segundos
+													FinSi
+												SiNo
+													Si eleccion=2 Entonces
+														Si bendas>=1 Entonces
+															bendas <- bendas-1
+															Salud <- Salud+15
+															Escribir PetName,' utilizo la benda.'
+															Escribir PetName,' recupero 15 de salud.'
+															Esperar 3 Segundos
+														SiNo
+															Escribir 'No tienes bendas.'
+															Esperar 3 Segundos
+														FinSi
+													SiNo
+														Si eleccion=3 Entonces
+															Si inyeccion>=1 Entonces
+																inyeccion <- inyeccion-1
+																Salud <- Salud+45
+																Escribir PetName,' utilizo la inyeccion.'
+																Escribir PetName,' recupero 45 de salud.'
+																Esperar 3 Segundos
+															SiNo
+																Escribir 'No tienes inyecciones.'
+																Esperar 3 Segundos
+															FinSi
+														SiNo
+															Si eleccion=4 Entonces
+																menu <- 'Hospital'
+															FinSi
+														FinSi
+													FinSi
+												FinSi
+											SiNo
+												Si menu=='Tienda' Entonces
+													Escribir '       Estas en tienda       '
+													Escribir '  __________________________  '
+													Escribir ' / \  \  \  \  \  \  \  \   \ '
+													Escribir '/ \ \ \ \ \ MARKET  \  \  \  \'
+													Escribir '=============================='
+													Escribir '|              |             |'
+													Escribir '|              |             |'
+													Escribir '|      --------==============|'
+													Escribir '|                            |'
+													Escribir '|       ',Personaje,'                |'
+													Escribir '=============================='
+													Escribir '¿Que deseas hacer?'
+													Escribir '1- Comprar comida.'
+													Escribir '2- Intentar robo.'
+													Escribir '3- Moverme.'
+													Leer eleccion
+													Si eleccion=1 Entonces
+														menu <- 'ShopN'
+													SiNo
+														Si eleccion=2 Entonces
+															buenrobo <- azar(5)
+															Si buenrobo=4 Entonces
+																dineroconseguido <- azar(1000)
+																aguaconseguida <- azar(10)
+																panconseguido <- azar(10)
+																Dinero <- Dinero+dineroconseguido
+																agua <- agua+aguaconseguida
+																pan <- pan+panconseguido
+																Borrar Pantalla
+																Escribir PetName,' ha robado la tienda.'
+																Escribir 'Botin conseguido: '
+																Escribir 'Dinero: $',dineroconseguido
+																Escribir 'Pan: ',panconseguido
+																Escribir 'Agua: ',aguaconseguida
+																Escribir Personaje,' - Soy un criminal.'
+																Escribir ''
+																Escribir 'Pulsa una tecla para continuar.'
+																Esperar Tecla
+															SiNo
+																Borrar Pantalla
+																Escribir ' ____oo___'
+																Escribir '//_|___|_\\__'
+																Escribir '-(o)------(o)-'
+																Escribir 'La policia te ha atrapado.'
+																Escribir 'Recibiste una penalizacion:'
+																Escribir 'Felicidad: -30'
+																Escribir 'Dinero: -100'
+																Escribir 'Salud: -5'
+																Felicidad <- Felicidad-30
+																Dinero <- Dinero-100
+																Salud <- Salud-5
+																Escribir 'Pusla una tecla para continuar.'
+																Esperar Tecla
+															FinSi
+														SiNo
+															Si eleccion=3 Entonces
+																menu <- 'Movimiento'
+															FinSi
+														FinSi
+													FinSi
+												SiNo
+													Si menu=='ShopN' Entonces
+														Escribir '¿Que necesitas comprar?'
+														Escribir '1- Pan       $50'
+														Escribir '2- Pastel    $100'
+														Escribir '3- Agua      $75'
+														Escribir '4- Jugo      $150'
+														Escribir '5- Volver.'
+														Escribir ' '
+														Leer eleccion
+														Si eleccion=1 Entonces
+															Escribir 'Ingresa una cantidad:'
+															Leer Cantidad
+															Si Cantidad>0 Entonces
+																Si Dinero>=(Cantidad*50) Entonces
+																	pan <- pan+Cantidad
+																	Dinero <- Dinero-(Cantidad*50)
+																	Escribir Cantidad,' panes fueron agregados a tu inventario.'
+																	Esperar 2 Segundos
+																SiNo
+																	Escribir 'Dinero insuficiente para realizar el pago.'
+																	Esperar 2 Segundos
+																FinSi
+															SiNo
+																Escribir 'Intento de vulnerar el sistema.'
+																Escribir 'Se te ha penalizado -20 de vida.'
+																vida <- vida-20
+																Esperar 2 Segundos
+															FinSi
+														SiNo
+															Si eleccion=2 Entonces
+																Escribir 'Ingresa una cantidad:'
+																Leer Cantidad
+																Si Cantidad>0 Entonces
+																	Si Dinero>=(Cantidad*100) Entonces
+																		pastel <- pastel+Cantidad
+																		Dinero <- Dinero-(Cantidad*100)
+																		Escribir Cantidad,' pasteles fueron agregadas a tu inventario.'
+																		Esperar 2 Segundos
+																	SiNo
+																		Escribir 'Dinero insuficiente para realizar el pago.'
+																		Esperar 2 Segundos
+																	FinSi
+																SiNo
+																	Escribir 'Intento de vulnerar el sistema.'
+																	Escribir 'Se te ha penalizado -20 de vida.'
+																	vida <- vida-20
+																	Esperar 2 Segundos
+																FinSi
+															SiNo
+																Si eleccion=3 Entonces
+																	Escribir 'Ingresa una cantidad:'
+																	Leer Cantidad
+																	Si Cantidad>0 Entonces
+																		Si Dinero>=(Cantidad*75) Entonces
+																			agua <- agua+Cantidad
+																			Dinero <- Dinero-(Cantidad*75)
+																			Escribir Cantidad,' aguas fueron agregadas a tu inventario.'
+																			Esperar 2 Segundos
+																		SiNo
+																			Escribir 'Dinero insuficiente para realizar el pago.'
+																			Esperar 2 Segundos
+																		FinSi
+																	SiNo
+																		Escribir 'Intento de vulnerar el sistema.'
+																		Escribir 'Se te ha penalizado -20 de vida.'
+																		vida <- vida-20
+																		Esperar 2 Segundos
+																	FinSi
+																SiNo
+																	Si eleccion=4 Entonces
+																		Escribir 'Ingresa una cantidad:'
+																		Leer Cantidad
+																		Si Cantidad>0 Entonces
+																			Si Dinero>=(Cantidad*150) Entonces
+																				jugo <- jugo+Cantidad
+																				Dinero <- Dinero-(Cantidad*150)
+																				Escribir Cantidad,' jugos fueron agregadas a tu inventario.'
+																				Esperar 2 Segundos
+																			SiNo
+																				Escribir 'Dinero insuficiente para realizar el pago.'
+																				Esperar 2 Segundos
+																			FinSi
+																		SiNo
+																			Escribir 'Intento de vulnerar el sistema'
+																			Escribir 'Se te ha penalizado -20 de vida.'
+																			vida <- vida-20
+																			Esperar 2 Segundos
+																		FinSi
+																	SiNo
+																		Si eleccion=5 Entonces
+																			menu <- 'Tienda'
+																		FinSi
+																	FinSi
+																FinSi
+															FinSi
+														FinSi
+													FinSi
+												FinSi
+											FinSi
+										FinSi
+									FinSi
+								FinSi
+							FinSi
+						FinSi
+					FinSi
+				FinSi
+			FinSi
+		FinSi
+	Hasta Que vida<=0
+	Borrar Pantalla
+	Escribir UserName,' tu mascota ',PetName,' ha muerto.'
+	Escribir 'Fin del juego.'
+	Escribir "Puntaje total: ",puntuacion
+	Esperar 10 Segundos
+FinAlgoritmo
