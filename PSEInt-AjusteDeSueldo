@@ -1,0 +1,60 @@
+Algoritmo ReAjusteDeSueldo
+	conceptodesueldo = 0
+	conceptoanterior = 0
+	n5 = 0
+	n10 = 0
+	n20 = 0
+	Escribir "Ingrese numero de empleados: "
+	leer emp
+	Dimension años[emp], sueldo[emp], nuevosueldo[emp],porcentaje[emp]
+	
+	Para i Desde 1 Hasta emp Hacer
+		Borrar Pantalla
+		Escribir "Ingrese los años de servicio del empleado numero: ",i
+		leer años[i]
+		Escribir "Ingrese el sueldo del empleado numero: ",i
+		leer sueldo[i]
+	FinPara
+	
+	Para i Desde 1 Hasta emp Hacer
+		si años[i] >= 5 y años[i] <= 10 Entonces
+			n5 = n5+1
+			porcentaje[i] = 15
+			nuevosueldo[i] = sueldo[i]+(sueldo[i]*0.15)
+		SiNo
+			si años[i] >= 11 y años[i] <= 20 Entonces
+				n10 = n10+1
+				porcentaje[i] = 20
+				nuevosueldo[i] = sueldo[i]+(sueldo[i]*0.20)
+			SiNo
+				si años[i] > 20 Entonces
+					n20 = n20+1
+					porcentaje[i] = 25
+					nuevosueldo[i] = sueldo[i]+(sueldo[i]*0.25)
+				SiNo
+					porcentaje[i] = 0
+					nuevosueldo[i] = sueldo[i] //no hay cambio
+				FinSi
+			FinSi
+		FinSi
+	FinPara
+	
+	Borrar Pantalla
+	
+	Para i Desde 1 Hasta emp Hacer
+		Escribir "==============================================="
+		Escribir "El nuevo sueldo del empleado numero ",i," es: ",nuevosueldo[i]," | (+",porcentaje[i],"%)"
+		Escribir "Diferencia: ",nuevosueldo[i]-sueldo[i]
+		conceptodesueldo = conceptodesueldo+nuevosueldo[i]
+		conceptoanterior = conceptoanterior+sueldo[i]
+	FinPara
+	Escribir "==============================================="
+	
+	Escribir "Concepto de sueldo anterior: ",conceptoanterior
+	Escribir "Concepto de sueldo nuevo   : ",conceptodesueldo
+	Escribir "Total adicional: ",conceptodesueldo-conceptoanterior,"  | (+",((conceptodesueldo-conceptoanterior)/conceptoanterior)*100,"%)"
+	Escribir "==============================================="
+	Escribir n5," empleados aplicaron a un aumento de 15%"
+	Escribir n10," empleados aplicaron a un aumento de 20%"
+	Escribir n20," empleados aplicaron a un aumento de 25%"
+FinAlgoritmo
