@@ -1,0 +1,46 @@
+from ctypes import windll as wd
+import time
+import random
+from pynput.keyboard import Listener
+
+#===CONFIG===#
+CPS = 20 # Clicks per second
+Toggle_Key = 'x' # Only letters (1)
+bypass_detector = True
+#============#
+
+Toggled = False
+LeftD = 0x0002
+LeftU = 0x0004
+
+def click():
+    wd.user32.mouse_event(LeftD, 0, 0, 0, 0)
+    wd.user32.mouse_event(LeftU, 0, 0, 0, 0)
+
+def toggle_autoclick():
+    global Toggled
+    Toggled = not Toggled
+
+def on_key_press(key):
+    try:
+        if key.char == Toggle_Key.lower() or key.char == Toggle_Key.upper():
+            toggle_autoclick()
+    except AttributeError:
+        pass
+
+def autoclick():
+    while True:
+        if Toggled:
+            click()
+            delay = 1/CPS
+            if bypass_detector:
+                rp = random.randint(1,3)
+                random_delay = random.uniform(delay, delay*(CPS/(CPS/rp)))
+                time.sleep(random_delay)
+            else:
+                time.sleep(delay)
+        else:
+            time.sleep(0.1)
+
+with Listener(on_press=on_key_press) as listener:
+    autoclick()
