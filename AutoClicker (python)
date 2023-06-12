@@ -1,46 +1,117 @@
 from ctypes import windll as wd
-import time
-import random
+from time import sleep
+from random import randint, uniform
 from pynput.keyboard import Listener
+from PyQt5.QtWidgets import QApplication, QInputDialog
 
-#===CONFIG===#
-CPS = 20 # Clicks per second
-Toggle_Key = 'x' # Only letters (1)
-bypass_detector = True
-#============#
+CPS = "temp"
+Toggle_Key_Left = "temp"
+Toggle_Key_Right = "temp"
+bypass_detector = "temp"
+
+LeftToggled = False
+RightToggled = False
+
+app = QApplication([])
+
+def GetAs(title, msg):
+    text, ok = QInputDialog.getText(None, title, msg)
+    if ok:
+        return text
+    else:
+        return None
+print("Cargando... esperando configuracion.")
+sleep(1)
+
+while not CPS.isdigit():
+    CPS = GetAs("Clicks por segundo", "Clicks por segundo:")
+    if CPS.isdigit():
+        CPS = int(CPS)
+        break
+
+while len(Toggle_Key_Left) > 1 or not Toggle_Key_Left.isalpha():
+    Toggle_Key_Left = GetAs("Letra izquierda", "Letra para encender click izquierdo:")
+    if len(Toggle_Key_Left) > 1 or not Toggle_Key_Left.isalpha():
+        print("Solo se acepta una letra")
+
+while len(Toggle_Key_Right) > 1 or not Toggle_Key_Right.isalpha():
+    Toggle_Key_Right = GetAs("Letra derecha", "Letra para encender click derecho:")
+    if len(Toggle_Key_Right) > 1 or not Toggle_Key_Right.isalpha():
+        print("Solo se acepta una letra")
+
+while bypass_detector == "temp":
+    bypass_detector = GetAs("Utilizar bypass", "Utilizar bypass (Si / No):")
+    if bypass_detector == "si":
+        bypass_detector = True
+    elif bypass_detector == "no":
+        bypass_detector = False
+    else:
+        bypass_detector = "temp"
+        print("Opción inválida.")
 
 Toggled = False
 LeftD = 0x0002
 LeftU = 0x0004
+RightD = 0x0008
+RightU = 0x0010
 
-def click():
-    wd.user32.mouse_event(LeftD, 0, 0, 0, 0)
-    wd.user32.mouse_event(LeftU, 0, 0, 0, 0)
 
-def toggle_autoclick():
-    global Toggled
-    Toggled = not Toggled
+def click(Clik1,Clik2):
+    wd.user32.mouse_event(Clik1, 0, 0, 0, 0)
+    wd.user32.mouse_event(Clik2, 0, 0, 0, 0)
+
+def toggle_autoclick(Clik):
+    global LeftToggled
+    global RightToggled
+    if Clik == "left":
+        LeftToggled = not LeftToggled
+    elif Clik == "right":
+        RightToggled = not RightToggled
 
 def on_key_press(key):
     try:
-        if key.char == Toggle_Key.lower() or key.char == Toggle_Key.upper():
-            toggle_autoclick()
+        if key.char == Toggle_Key_Left.lower() or key.char == Toggle_Key_Left.upper():
+            toggle_autoclick("left")
+        elif key.char == Toggle_Key_Right.lower() or key.char == Toggle_Key_Right.upper():
+            toggle_autoclick("right")
     except AttributeError:
         pass
 
 def autoclick():
     while True:
-        if Toggled:
-            click()
-            delay = 1/CPS
+        if LeftToggled and RightToggled:
+            click(LeftD,LeftU)
+            click(RightD,RightU)
+            delay = 1 / CPS
             if bypass_detector:
-                rp = random.randint(1,3)
-                random_delay = random.uniform(delay, delay*(CPS/(CPS/rp)))
-                time.sleep(random_delay)
+                rp = randint(1, 3)
+                random_delay = uniform(delay, delay * (CPS / (CPS / rp)))
+                sleep(random_delay)
             else:
-                time.sleep(delay)
+                sleep(delay)
+        elif LeftToggled:
+            click(LeftD,LeftU)
+            delay = 1 / CPS
+            if bypass_detector:
+                rp = randint(1, 3)
+                random_delay = uniform(delay, delay * (CPS / (CPS / rp)))
+                sleep(random_delay)
+            else:
+                sleep(delay)
+        elif RightToggled:
+            click(RightD,RightU)
+            delay = 1 / CPS
+            if bypass_detector:
+                rp = randint(1, 3)
+                random_delay = uniform(delay, delay * (CPS / (CPS / rp)))
+                sleep(random_delay)
+            else:
+                sleep(delay)
         else:
-            time.sleep(0.1)
+            sleep(0.1)
+
+print(f"Clicks por segundo: {CPS}\nClick izquierdo: {Toggle_Key_Left}\nClick derecho: {Toggle_Key_Right}\nBypass: {bypass_detector}")
+print(f"Listo para usar, cierra esta ventana para desactivar todo.")
 
 with Listener(on_press=on_key_press) as listener:
     autoclick()
